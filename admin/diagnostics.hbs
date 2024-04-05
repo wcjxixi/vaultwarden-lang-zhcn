@@ -45,7 +45,7 @@
                     {{/unless}}
                     <dt class="col-sm-5">数据库版本</dt>
                     <dd class="col-sm-7">
-                        <span><b>{{page_data.db_type}}:</b> {{page_data.db_version}}</span>
+                        <span><b>{{page_data.db_type}}：</b> {{page_data.db_version}}</span>
                     </dd>
                 </dl>
             </div>
@@ -59,7 +59,7 @@
                     <dd class="col-sm-7">
                         <span class="d-block"><b>{{ page_data.host_os }} / {{ page_data.host_arch }}</b></span>
                     </dd>
-                    <dt class="col-sm-5">是否在容器中运行</dt>
+                    <dt class="col-sm-5">运行在容器中</dt>
                     <dd class="col-sm-7">
                     {{#if page_data.running_within_container}}
                         <span class="d-block"><b>是（基础镜像：{{ page_data.container_base_image }}）</b></span>
@@ -68,7 +68,7 @@
                         <span class="d-block"><b>否</b></span>
                     {{/unless}}
                     </dd>
-                    <dt class="col-sm-5">环境设置是否被覆盖</dt>
+                    <dt class="col-sm-5">环境设置覆盖</dt>
                     <dd class="col-sm-7">
                     {{#if page_data.overrides}}
                         <span class="d-block" title="以下设置被覆盖：{{page_data.overrides}}"><b>是</b></span>
@@ -106,13 +106,13 @@
                     {{/unless}}
                     </dd>
                     {{/if}}
-                    {{!-- 结束如果 IP 头存在 --}}
+                    {{!-- 结束 -- 如果 IP 头存在 --}}
                     <dt class="col-sm-5">互联网访问
                     {{#if page_data.has_http_access}}
-                        <span class="badge bg-success" title="我们有互联网访问！">正常</span>
+                        <span class="badge bg-success" title="可以访问互联网！">正常</span>
                     {{/if}}
                     {{#unless page_data.has_http_access}}
-                        <span class="badge bg-danger" title="似乎没有互联网访问。请修复。">错误</span>
+                        <span class="badge bg-danger" title="似乎无法访问互联网。请修复。">错误</span>
                     {{/unless}}
                     </dt>
                     <dd class="col-sm-7">
@@ -126,14 +126,14 @@
                     <dt class="col-sm-5">通过代理进行互联网访问</dt>
                     <dd class="col-sm-7">
                     {{#if page_data.uses_proxy}}
-                        <span class="d-block" title="互联网访问通过代理进行（已配置 HTTPS_PROXY 或 HTTP_PROXY）。"><b>是</b></span>
+                        <span class="d-block" title="通过代理（配置了 HTTPS_PROXY 或 HTTP_PROXY）访问互联网。"><b>是</b></span>
                     {{/if}}
                     {{#unless page_data.uses_proxy}}
-                        <span class="d-block" title="我们直接访问互联网，未配置外出代理。"><b>否</b></span>
+                        <span class="d-block" title="直接访问互联网，未配置外出代理。"><b>否</b></span>
                     {{/unless}}
                     </dd>
                     <dt class="col-sm-5">DNS（github.com）
-                        <span class="badge bg-success d-none" id="dns-success" title="DNS 解析正常工作！">正常</span>
+                        <span class="badge bg-success d-none" id="dns-success" title="DNS 解析正常！">正常</span>
                         <span class="badge bg-danger d-none" id="dns-warning" title="DNS 解析失败。请修复。">错误</span>
                     </dt>
                     <dd class="col-sm-7">
