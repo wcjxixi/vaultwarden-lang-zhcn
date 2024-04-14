@@ -9,3 +9,11 @@
 [dani-garcia/vaultwarden](https://github.com/dani-garcia/vaultwarden) 管理页面（位于 `src/static/templates/admin`）的简体中文翻译。
 
 ⚠️ 经测试适用于 [v1.30.5](https://github.com/dani-garcia/vaultwarden/releases/tag/1.30.5)
+
+## 使用方法
+保持文件结构，放置于 Vaultwarden 对应的目录下即可。
+
+例如 Docker 方式，放置于宿主机上 Vaultwarden 对应的目录下：
+
++ 电子邮件模板文件放置于宿主机的 `/vaultwarden-data/templates/email` 文件夹下
++ 管理后台模板文件放置于宿主机的 `/vaultwarden-data/templates/admin` 文件夹下
