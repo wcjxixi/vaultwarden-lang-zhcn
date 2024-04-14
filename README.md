@@ -13,7 +13,7 @@
 ## 使用方法
 保持文件结构，放置于 Vaultwarden 对应的目录下即可。
 
-例如 Docker 方式，放置于宿主机上 Vaultwarden 对应的目录下：
+例如 Docker 方式，假设你部署的时候使用 `-v` 参数指定的宿主机文件夹为 `vaultwarden-data`：
 
 + 电子邮件模板文件放置于宿主机的 `/vaultwarden-data/templates/email` 文件夹下
 + 管理后台模板文件放置于宿主机的 `/vaultwarden-data/templates/admin` 文件夹下
