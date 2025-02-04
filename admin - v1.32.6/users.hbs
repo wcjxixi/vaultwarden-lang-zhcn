@@ -1,0 +1,148 @@
+<main class="container-xl">
+    <div id="users-block" class="my-3 p-3 rounded shadow">
+        <h6 class="border-bottom pb-2 mb-3">已注册的用户</h6>
+        <div class="table-responsive-xl small">
+            <table id="users-table" class="table table-sm table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="vw-account-details">用户</th>
+                        <th class="vw-created-at">创建时间</th>
+                        <th class="vw-last-active">最后活动</th>
+                        <th class="vw-entries">条目</th>
+                        <th class="vw-attachments">附件</th>
+                        <th class="vw-organizations">组织</th>
+                        <th class="vw-actions">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each page_data}}
+                    <tr>
+                        <td>
+                            <svg width="48" height="48" class="float-start me-2 rounded" data-jdenticon-value="{{email}}">
+                            <div>
+                                <strong>{{name}}</strong>
+                                <span class="d-block">{{email}}</span>
+                                <span class="d-block">
+                                    {{#unless user_enabled}}
+                                        <span class="badge bg-danger me-2" title="用户已禁用">已禁用</span>
+                                    {{/unless}}
+                                    {{#if TwoFactorEnabled}}
+                                        <span class="badge bg-success me-2" title="2FA 已启用">2FA</span>
+                                    {{/if}}
+                                    {{#case _status 1}}
+                                        <span class="badge bg-warning text-dark me-2" title="用户已邀请">已邀请</span>
+                                    {{/case}}
+                                    {{#if emailVerified}}
+                                        <span class="badge bg-success me-2" title="邮箱已验证">已验证</span>
+                                    {{/if}}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="d-block">{{created_at}}</span>
+                        </td>
+                        <td>
+                            <span class="d-block">{{last_active}}</span>
+                        </td>
+                        <td>
+                            <span class="d-block">{{cipher_count}}</span>
+                        </td>
+                        <td>
+                            <span class="d-block"><strong>数量：</strong> {{attachment_count}}</span>
+                            {{#if attachment_count}}
+                            <span class="d-block"><strong>大小：</strong> {{attachment_size}}</span>
+                            {{/if}}
+                        </td>
+                        <td>
+                            <div class="overflow-auto vw-org-cell" data-vw-user-email="{{email}}" data-vw-user-uuid="{{id}}">
+                            {{#each organizations}}
+                            <button class="badge" data-bs-toggle="modal" data-bs-target="#userOrgTypeDialog" data-vw-org-type="{{type}}" data-vw-org-uuid="{{id}}" data-vw-org-name="{{name}}">{{name}}</button>
+                            {{/each}}
+                            </div>
+                        </td>
+                        <td class="text-end px-0 small">
+                            <span data-vw-user-uuid="{{id}}" data-vw-user-email="{{email}}">
+                                {{#if TwoFactorEnabled}}
+                                <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-remove2fa>移除所有 2FA</button><br>
+                                {{/if}}
+                                <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-deauth-user>取消授权会话</button><br>
+                                <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-delete-user>删除用户</button><br>
+                                {{#if user_enabled}}
+                                <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-disable-user>禁用用户</button><br>
+                                {{else}}
+                                <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-enable-user>启用用户</button><br>
+                                {{/if}}
+                                {{#case _status 1}}
+                                <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-resend-user-invite>重新发送邀请</button><br>
+                                {{/case}}
+                            </span>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-3 clearfix">
+            <button type="button" class="btn btn-sm btn-danger" id="updateRevisions"
+                title="强制所有客户端在下次连接时获取新数据。在恢复备份以移除任何过时数据后，此功能非常有用。">
+                强制客户端重新同步
+            </button>
+
+            <button type="button" class="btn btn-sm btn-primary float-end" id="reload">重新加载用户</button>
+        </div>
+    </div>
+
+    <div id="inviteUserFormBlock" class="align-items-center p-3 mb-3 text-white-50 bg-secondary rounded shadow">
+        <div>
+            <h6 class="mb-0 text-white">邀请用户</h6>
+            <small>邮箱地址：</small>
+
+            <form class="form-inline input-group w-50" id="inviteUserForm">
+                <input type="email" class="form-control me-2" id="inviteEmail" placeholder="输入邮箱地址" required spellcheck="false">
+                <button type="submit" class="btn btn-primary">邀请</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="userOrgTypeDialog" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">
+                        <b>Update User Type:</b><br><b>Organization:</b> <span id="userOrgTypeDialogOrgName"></span><br><b>User:</b> <span id="userOrgTypeDialogUserEmail"></span>
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="form" id="userOrgTypeForm">
+                    <input type="hidden" name="user_uuid" id="userOrgTypeUserUuid" value="">
+                    <input type="hidden" name="org_uuid" id="userOrgTypeOrgUuid" value="">
+                    <div class="modal-body">
+                        <div class="radio">
+                            <label><input type="radio" value="2" class="form-radio-input" name="user_type" id="userOrgTypeUser">&nbsp;用户</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" value="3" class="form-radio-input" name="user_type" id="userOrgTypeManager">&nbsp;经理</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" value="1" class="form-radio-input" name="user_type" id="userOrgTypeAdmin">&nbsp;管理员</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" value="0" class="form-radio-input" name="user_type" id="userOrgTypeOwner">&nbsp;所有者</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-sm btn-primary">更改角色</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<link rel="stylesheet" href="{{urlpath}}/vw_static/datatables.css" />
+<script src="{{urlpath}}/vw_static/jquery-3.7.1.slim.js"></script>
+<script src="{{urlpath}}/vw_static/datatables.js"></script>
+<script src="{{urlpath}}/vw_static/admin_users.js"></script>
+<script src="{{urlpath}}/vw_static/jdenticon-3.3.0.js"></script>

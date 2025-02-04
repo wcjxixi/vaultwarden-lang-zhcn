@@ -1,0 +1,235 @@
+<main class="container-xl">
+    <div id="diagnostics-block" class="my-3 p-3 rounded shadow">
+        <h6 class="border-bottom pb-2 mb-2">诊断信息</h6>
+
+        <h3>版本信息</h3>
+        <div class="row">
+            <div class="col-md">
+                <dl class="row">
+                    <dt class="col-sm-5">服务器已安装版本
+                        <span class="badge bg-success d-none" id="server-success" title="已安装最新版本。">正常</span>
+                        <span class="badge bg-warning text-dark d-none" id="server-warning" title="检测到可用更新。">需更新</span>
+                        <span class="badge bg-info text-dark d-none" id="server-branch" title="此为分支版本。">分支版</span>
+                    </dt>
+                    <dd class="col-sm-7">
+                        <span id="server-installed">{{page_data.current_release}}</span>
+                    </dd>
+                    <dt class="col-sm-5">服务器最新版本
+                        <span class="badge bg-secondary d-none" id="server-failed" title="无法获取最新版本。">未知</span>
+                    </dt>
+                    <dd class="col-sm-7">
+                        <span id="server-latest">{{page_data.latest_release}}<span id="server-latest-commit" class="d-none">-{{page_data.latest_commit}}</span></span>
+                    </dd>
+                    {{#if page_data.web_vault_enabled}}
+                    <dt class="col-sm-5">网页端已安装版本
+                        <span class="badge bg-success d-none" id="web-success" title="已安装最新版本。">正常</span>
+                        <span class="badge bg-warning text-dark d-none" id="web-warning" title="检测到可用更新。">需更新</span>
+                    </dt>
+                    <dd class="col-sm-7">
+                        <span id="web-installed">{{page_data.web_vault_version}}</span>
+                    </dd>
+                    {{#unless page_data.running_within_container}}
+                    <dt class="col-sm-5">网页端最新版本
+                        <span class="badge bg-secondary d-none" id="web-failed" title="无法获取最新版本。">未知</span>
+                    </dt>
+                    <dd class="col-sm-7">
+                        <span id="web-latest">{{page_data.latest_web_build}}</span>
+                    </dd>
+                    {{/unless}}
+                    {{/if}}
+                    {{#unless page_data.web_vault_enabled}}
+                    <dt class="col-sm-5">网页端已安装版本</dt>
+                    <dd class="col-sm-7">
+                        <span id="web-installed">网页密码库已禁用</span>
+                    </dd>
+                    {{/unless}}
+                    <dt class="col-sm-5">数据库</dt>
+                    <dd class="col-sm-7">
+                        <span><b>{{page_data.db_type}}:</b> {{page_data.db_version}}</span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <h3>系统检查</h3>
+        <div class="row">
+            <div class="col-md">
+                <dl class="row">
+                    <dt class="col-sm-5">操作系统/架构</dt>
+                    <dd class="col-sm-7">
+                        <span class="d-block"><b>{{ page_data.host_os }} / {{ page_data.host_arch }}</b></span>
+                    </dd>
+                    <dt class="col-sm-5">运行于容器中</dt>
+                    <dd class="col-sm-7">
+                    {{#if page_data.running_within_container}}
+                        <span class="d-block"><b>是 (基础镜像: {{ page_data.container_base_image }})</b></span>
+                    {{/if}}
+                    {{#unless page_data.running_within_container}}
+                        <span class="d-block"><b>否</b></span>
+                    {{/unless}}
+                    </dd>
+                    <dt class="col-sm-5">环境变量被覆盖</dt>
+                    <dd class="col-sm-7">
+                    {{#if page_data.overrides}}
+                        <span class="d-block" title="以下环境变量被覆盖: {{page_data.overrides}}"><b>是</b></span>
+                    {{/if}}
+                    {{#unless page_data.overrides}}
+                        <span class="d-block"><b>否</b></span>
+                    {{/unless}}
+                    </dd>
+                    <dt class="col-sm-5">使用反向代理</dt>
+                    <dd class="col-sm-7">
+                    {{#if page_data.ip_header_exists}}
+                        <span class="d-block" title="检测到 IP 标头。"><b>是</b></span>
+                    {{/if}}
+                    {{#unless page_data.ip_header_exists}}
+                        <span class="d-block" title="未检测到 IP 标头。"><b>否</b></span>
+                    {{/unless}}
+                    </dd>
+                    {{!-- 仅当检测到 IP 标头时显示 --}}
+                    {{#if page_data.ip_header_exists}}
+                    <dt class="col-sm-5">IP 标头
+                    {{#if page_data.ip_header_match}}
+                        <span class="badge bg-success" title="IP_HEADER 配置有效。">匹配</span>
+                    {{/if}}
+                    {{#unless page_data.ip_header_match}}
+                        <span class="badge bg-danger" title="IP_HEADER 配置无效。日志中的 IP 可能不准确，请修复。">不匹配</span>
+                    {{/unless}}
+                    </dt>
+                    <dd class="col-sm-7">
+                    {{#if page_data.ip_header_match}}
+                        <span class="d-block"><b>配置/服务器:</b> {{ page_data.ip_header_name }}</span>
+                    {{/if}}
+                    {{#unless page_data.ip_header_match}}
+                        <span class="d-block"><b>配置:</b> {{ page_data.ip_header_config }}</span>
+                        <span class="d-block"><b>服务器:</b> {{ page_data.ip_header_name }}</span>
+                    {{/unless}}
+                    </dd>
+                    {{/if}}
+                    {{!-- IP 标头检查结束 --}}
+                    <dt class="col-sm-5">互联网访问
+                    {{#if page_data.has_http_access}}
+                        <span class="badge bg-success" title="互联网连接正常！">正常</span>
+                    {{/if}}
+                    {{#unless page_data.has_http_access}}
+                        <span class="badge bg-danger" title="无法访问互联网，请检查配置！">错误</span>
+                    {{/unless}}
+                    </dt>
+                    <dd class="col-sm-7">
+                    {{#if page_data.has_http_access}}
+                        <span class="d-block"><b>是</b></span>
+                    {{/if}}
+                    {{#unless page_data.has_http_access}}
+                        <span class="d-block"><b>否</b></span>
+                    {{/unless}}
+                    </dd>
+                    <dt class="col-sm-5">通过代理访问互联网</dt>
+                    <dd class="col-sm-7">
+                    {{#if page_data.uses_proxy}}
+                        <span class="d-block" title="已配置代理（HTTPS_PROXY 或 HTTP_PROXY）。"><b>是</b></span>
+                    {{/if}}
+                    {{#unless page_data.uses_proxy}}
+                        <span class="d-block" title="未配置代理，使用直连访问。"><b>否</b></span>
+                    {{/unless}}
+                    </dd>
+                    <dt class="col-sm-5">WebSocket 已启用
+                        {{#if page_data.enable_websocket}}
+                        <span class="badge bg-success d-none" id="websocket-success" title="WebSocket 连接正常。">正常</span>
+                        <span class="badge bg-danger d-none" id="websocket-error" title="WebSocket 连接错误，请检查反向代理配置！">错误</span>
+                        {{/if}}
+                    </dt>
+                    <dd class="col-sm-7">
+                    {{#if page_data.enable_websocket}}
+                        <span class="d-block" title="已启用 WebSocket 连接（ENABLE_WEBSOCKET 为 true）。"><b>是</b></span>
+                    {{/if}}
+                    {{#unless page_data.enable_websocket}}
+                        <span class="d-block" title="已禁用 WebSocket 连接（ENABLE_WEBSOCKET 为 false）。"><b>否</b></span>
+                    {{/unless}}
+                    </dd>
+
+                    <dt class="col-sm-5">DNS 解析（github.com）
+                        <span class="badge bg-success d-none" id="dns-success" title="DNS 解析正常！">正常</span>
+                        <span class="badge bg-danger d-none" id="dns-warning" title="DNS 解析失败，请修复！">错误</span>
+                    </dt>
+                    <dd class="col-sm-7">
+                        <span id="dns-resolved">{{page_data.dns_resolved}}</span>
+                    </dd>
+                    <dt class="col-sm-5">本地时间</dt>
+                    <dd class="col-sm-7">
+                        <span><b>服务器:</b> {{page_data.server_time_local}}</span>
+                    </dd>
+                    <dt class="col-sm-5">UTC 时间
+                        <span class="badge bg-success d-none" id="time-success" title="服务器与浏览器时间差在 15 秒内。">服务器/浏览器正常</span>
+                        <span class="badge bg-danger d-none" id="time-warning" title="服务器与浏览器时间差超过 15 秒。">服务器/浏览器错误</span>
+                        <span class="badge bg-success d-none" id="ntp-server-success" title="服务器与 NTP 时间差在 15 秒内。">服务器 NTP 正常</span>
+                        <span class="badge bg-danger d-none" id="ntp-server-warning" title="服务器与 NTP 时间差超过 15 秒。">服务器 NTP 错误</span>
+                        <span class="badge bg-success d-none" id="ntp-browser-success" title="浏览器与 NTP 时间差在 15 秒内。">浏览器 NTP 正常</span>
+                        <span class="badge bg-danger d-none" id="ntp-browser-warning" title="浏览器与 NTP 时间差超过 15 秒。">浏览器 NTP 错误</span>
+                    </dt>
+                    <dd class="col-sm-7">
+                        <span id="ntp-time" class="d-block"><b>NTP:</b> <span id="ntp-server-string">{{page_data.ntp_time}}</span></span>
+                        <span id="time-server" class="d-block"><b>服务器:</b> <span id="time-server-string">{{page_data.server_time}}</span></span>
+                        <span id="time-browser" class="d-block"><b>浏览器:</b> <span id="time-browser-string"></span></span>
+                    </dd>
+
+                    <dt class="col-sm-5">域名配置
+                        <span class="badge bg-success d-none" id="domain-success" title="域名变量与浏览器地址匹配且配置正确。">匹配</span>
+                        <span class="badge bg-danger d-none" id="domain-warning" title="域名变量与浏览器地址不匹配。&#013;&#010;域名配置可能有误，部分功能可能异常！">不匹配</span>
+                        <span class="badge bg-success d-none" id="https-success" title="已配置使用 HTTPS">HTTPS</span>
+                        <span class="badge bg-danger d-none" id="https-warning" title="未配置使用 HTTPS。&#013;&#010;部分功能可能异常！">未使用 HTTPS</span>
+                    </dt>
+                    <dd class="col-sm-7">
+                        <span id="domain-server" class="d-block"><b>服务器:</b> <span id="domain-server-string">{{page_data.admin_url}}</span></span>
+                        <span id="domain-browser" class="d-block"><b>浏览器:</b> <span id="domain-browser-string"></span></span>
+                    </dd>
+
+                    <dt class="col-sm-5">HTTP 响应验证
+                        <span class="badge bg-success d-none" id="http-response-success" title="所有标头和 HTTP 响应正常。">正常</span>
+                        <span class="badge bg-danger d-none" id="http-response-warning" title="部分标头或 HTTP 响应返回无效数据！">错误</span>
+                    </dt>
+                    <dd class="col-sm-7">
+                        <span id="http-response-errors" class="d-block"></span>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <h3>技术支持</h3>
+        <div class="row">
+            <div class="col-md">
+                <dl class="row">
+                    <dd class="col-sm-12">
+                        如需支持，请在提交新问题前先查阅以下链接：
+                         <a href="https://vaultwarden.discourse.group/" target="_blank" rel="noreferrer noopener">Vaultwarden 论坛</a>
+                         | <a href="https://github.com/dani-garcia/vaultwarden/discussions" target="_blank" rel="noreferrer noopener">GitHub 讨论区</a>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dd class="col-sm-12">
+                        您可以使用下方按钮生成支持字符串，以便在论坛或 GitHub 提交问题时复制/粘贴。<br>
+                        我们已默认隐藏敏感信息，但仍请检查生成内容是否包含需隐藏的数据！<br>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="col-sm-3">
+                        <button type="button" id="gen-support" class="btn btn-primary">生成支持字符串</button>
+                        <br><br>
+                        <button type="button" id="copy-support" class="btn btn-info mb-3 d-none">复制到剪贴板</button>
+                        <div class="toast-container position-absolute float-start vw-copy-toast">
+                            <div id="toastClipboardCopy" class="toast fade hide" role="status" aria-live="polite" aria-atomic="true" data-bs-autohide="true" data-bs-delay="1500">
+                                <div class="toast-body">
+                                    已复制到剪贴板！
+                                </div>
+                            </div>
+                        </div>
+                    </dt>
+                    <dd class="col-sm-9">
+                        <pre id="support-string" class="pre-scrollable d-none w-100 border p-2"></pre>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</main>
+<script src="{{urlpath}}/vw_static/admin_diagnostics.js"></script>
+<script type="application/json" id="diagnostics_json">{{to_json page_data}}</script>
