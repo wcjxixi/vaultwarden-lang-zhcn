@@ -33,7 +33,7 @@
                                         <span class="badge bg-warning text-dark me-2" title="用户已邀请">已邀请</span>
                                     {{/case}}
                                     {{#if emailVerified}}
-                                        <span class="badge bg-success me-2" title="邮箱已验证">已验证</span>
+                                        <span class="badge bg-success me-2" title="电子邮箱已验证">已验证</span>
                                     {{/if}}
                                 </span>
                             </div>
@@ -65,7 +65,7 @@
                                 {{#if TwoFactorEnabled}}
                                 <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-remove2fa>移除所有 2FA</button><br>
                                 {{/if}}
-                                <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-deauth-user>取消授权会话</button><br>
+                                <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-deauth-user>取消会话授权</button><br>
                                 <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-delete-user>删除用户</button><br>
                                 {{#if user_enabled}}
                                 <button type="button" class="btn btn-sm btn-link p-0 border-0 float-right" vw-disable-user>禁用用户</button><br>
@@ -96,10 +96,10 @@
     <div id="inviteUserFormBlock" class="align-items-center p-3 mb-3 text-white-50 bg-secondary rounded shadow">
         <div>
             <h6 class="mb-0 text-white">邀请用户</h6>
-            <small>邮箱地址：</small>
+            <small>电子邮箱：</small>
 
             <form class="form-inline input-group w-50" id="inviteUserForm">
-                <input type="email" class="form-control me-2" id="inviteEmail" placeholder="输入邮箱地址" required spellcheck="false">
+                <input type="email" class="form-control me-2" id="inviteEmail" placeholder="输入电子邮箱" required spellcheck="false">
                 <button type="submit" class="btn btn-primary">邀请</button>
             </form>
         </div>
