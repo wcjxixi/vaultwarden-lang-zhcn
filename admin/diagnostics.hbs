@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md">
                 <dl class="row">
-                    <dt class="col-sm-5">已安装服务器版本
+                    <dt class="col-sm-5">安装的服务器版本
                         <span class="badge bg-success d-none" id="server-success" title="已安装最新版本。">正常</span>
                         <span class="badge bg-warning text-dark d-none" id="server-warning" title="似乎有可用更新。">更新</span>
                         <span class="badge bg-info text-dark d-none" id="server-branch" title="这是一个分支版本。">分支</span>
@@ -14,14 +14,14 @@
                     <dd class="col-sm-7">
                         <span id="server-installed">{{page_data.current_release}}</span>
                     </dd>
-                    <dt class="col-sm-5">最新服务器版本
+                    <dt class="col-sm-5">最新的服务器版本
                         <span class="badge bg-secondary d-none" id="server-failed" title="无法确定最新版本。">未知</span>
                     </dt>
                     <dd class="col-sm-7">
                         <span id="server-latest">{{page_data.latest_release}}<span id="server-latest-commit" class="d-none">-{{page_data.latest_commit}}</span></span>
                     </dd>
                     {{#if page_data.web_vault_enabled}}
-                    <dt class="col-sm-5">已安装 Web 版本
+                    <dt class="col-sm-5">安装的 Web 版本
                         <span class="badge bg-success d-none" id="web-success" title="已安装最新版本。">正常</span>
                         <span class="badge bg-warning d-none" id="web-warning" title="似乎有可用更新。">更新</span>
                     </dt>
@@ -29,7 +29,7 @@
                         <span id="web-installed">{{page_data.web_vault_version}}</span>
                     </dd>
                     {{#unless page_data.running_within_container}}
-                    <dt class="col-sm-5">最新 Web 版本
+                    <dt class="col-sm-5">最新的 Web 版本
                         <span class="badge bg-secondary d-none" id="web-failed" title="无法确定最新版本。">未知</span>
                     </dt>
                     <dd class="col-sm-7">
@@ -38,7 +38,7 @@
                     {{/unless}}
                     {{/if}}
                     {{#unless page_data.web_vault_enabled}}
-                    <dt class="col-sm-5">已安装 Web 版本</dt>
+                    <dt class="col-sm-5">安装的 Web 版本</dt>
                     <dd class="col-sm-7">
                         <span id="web-installed">Web 密码库已禁用</span>
                     </dd>
