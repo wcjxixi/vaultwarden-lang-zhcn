@@ -8,7 +8,7 @@
 
 ⚠️不再维护 email 模板的简体中文翻译⚠️
 
-email - v1.32.4（也适用于 [v1.33.1](https://github.com/dani-garcia/vaultwarden/releases/tag/1.33.1) ）
+email - v1.32.4 也适用于 [v1.33.1](https://github.com/dani-garcia/vaultwarden/releases/tag/1.33.1) 
 
 ## 使用方法
 保持文件结构，放置于 Vaultwarden 对应的目录下。
