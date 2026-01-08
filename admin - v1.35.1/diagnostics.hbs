@@ -107,7 +107,7 @@
                     </dd>
                     {{/if}}
                     {{!-- 结束 -- 如果 IP 头存在 --}}
-                    <dt class="col-sm-5">互联网访问
+                    <dt class="col-sm-5">访问互联网
                     {{#if page_data.has_http_access}}
                         <span class="badge bg-success abbr-badge" title="可以访问互联网！">正常</span>
                     {{/if}}
@@ -123,7 +123,7 @@
                         <span class="d-block"><b>否</b></span>
                     {{/unless}}
                     </dd>
-                    <dt class="col-sm-5">通过代理进行互联网访问</dt>
+                    <dt class="col-sm-5">通过代理访问互联网</dt>
                     <dd class="col-sm-7">
                     {{#if page_data.uses_proxy}}
                         <span class="d-block" title="通过代理 (配置了 HTTPS_PROXY 或 HTTP_PROXY) 访问互联网。"><b>是</b></span>
