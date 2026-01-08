@@ -24,7 +24,7 @@
                     <dt class="col-sm-5">安装的 Web 版本
                         <span class="badge bg-success d-none abbr-badge" id="web-success" title="已安装最新版本。">正常</span>
                         <span class="badge bg-warning text-dark d-none abbr-badge" id="web-warning" title="似乎有可用更新。">更新</span>
-                        <span class="badge bg-info text-dark d-none abbr-badge" id="web-prerelease" title="你似乎正在使用预发布版本。">Pre-Release</span>
+                        <span class="badge bg-info text-dark d-none abbr-badge" id="web-prerelease" title="您似乎正在使用预发布版本。">Pre-Release</span>
                     </dt>
                     <dd class="col-sm-7">
                         <span id="web-installed">{{page_data.web_vault_version}}</span>
@@ -132,7 +132,7 @@
                         <span class="d-block" title="直接访问互联网，未配置外出代理。"><b>否</b></span>
                     {{/unless}}
                     </dd>
-                    <dt class="col-sm-5">Websocket 已启用
+                    <dt class="col-sm-5">启用 Websocket
                         {{#if page_data.enable_websocket}}
                         <span class="badge bg-success d-none abbr-badge" id="websocket-success" title="WebSocket 连接正常。">正常</span>
                         <span class="badge bg-danger d-none abbr-badge" id="websocket-error" title="WebSocket 连接错误，请检查您的反向代理配置！">错误</span>
@@ -140,10 +140,10 @@
                     </dt>
                     <dd class="col-sm-7">
                     {{#if page_data.enable_websocket}}
-                        <span class="d-block" title="已启用 WebSocket 连接 (ENABLE_WEBSOCKET is true)。"><b>是</b></span>
+                        <span class="d-block" title="已启用 WebSocket 连接 (ENABLE_WEBSOCKET 设置为 true)。"><b>是</b></span>
                     {{/if}}
                     {{#unless page_data.enable_websocket}}
-                        <span class="d-block" title="已禁用 WebSocket 连接 (ENABLE_WEBSOCKET is false)。"><b>否</b></span>
+                        <span class="d-block" title="已禁用 WebSocket 连接 (ENABLE_WEBSOCKET 设置为 false)。"><b>否</b></span>
                     {{/unless}}
                     </dd>
 
