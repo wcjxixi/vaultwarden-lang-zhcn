@@ -27,13 +27,13 @@
                         <span class="badge bg-info text-dark d-none abbr-badge" id="web-prerelease" title="您似乎正在使用预发布版本。">Pre-Release</span>
                     </dt>
                     <dd class="col-sm-7">
-                        <span id="web-installed">{{page_data.web_vault_version}}</span>
+                        <span id="web-installed">{{page_data.active_web_release}}</span>
                     </dd>
                     <dt class="col-sm-5">最新的 Web 版本
                         <span class="badge bg-secondary d-none abbr-badge" id="web-failed" title="无法确定最新版本。">未知</span>
                     </dt>
                     <dd class="col-sm-7">
-                        <span id="web-latest">{{page_data.latest_web_build}}</span>
+                        <span id="web-latest">{{page_data.latest_web_release}}</span>
                     </dd>
                     {{/if}}
                     {{#unless page_data.web_vault_enabled}}
